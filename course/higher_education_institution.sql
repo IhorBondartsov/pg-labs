@@ -14,7 +14,7 @@ END;
 $$ language 'plpgsql';
 
 
--- DROP SCHEMA IF EXISTS hei CASCADE;
+DROP SCHEMA IF EXISTS ukraine CASCADE;
 CREATE SCHEMA ukraine;
 
 CREATE TABLE ukraine.higher_education_institution
@@ -29,6 +29,7 @@ CREATE TABLE ukraine.higher_education_institution
 CREATE TABLE ukraine.speciality
 (
     id   serial PRIMARY KEY,
+    code SMALLINT UNIQUE NOT NULL,
     name VARCHAR(10000) UNIQUE NOT NULL CHECK (name <> '')
 );
 
@@ -42,16 +43,15 @@ CREATE TABLE ukraine.education_form
 
 CREATE TABLE ukraine.competition
 (
-    higher_education_institution_id VARCHAR NOT NULL,
-    speciality_id                   VARCHAR NOT NULL,
-    education_form_id               VARCHAR NOT NULL,
-    year                            date    NOT NULL,
+    higher_education_institution_id INT NOT NULL,
+    speciality_id                   INT NOT NULL,
+    education_form_id               INT NOT NULL,
+    year                            DATE     NOT NULL,
     number_of_budget_places         INT       DEFAULT 0,
     number_of_commercial_places     INT       DEFAULT 0,
     updated_at                      TIMESTAMP DEFAULT NOW(),
     price                           DOUBLE PRECISION,
 
-    CONSTRAINT year_must_be_1st_jan CHECK ( date_trunc('year', year) = year ),
     PRIMARY KEY (higher_education_institution_id, speciality_id, education_form_id),
     CONSTRAINT fk_higher_education_institution FOREIGN KEY (higher_education_institution_id)
         REFERENCES ukraine.higher_education_institution (id) ON DELETE CASCADE,
