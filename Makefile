@@ -9,7 +9,8 @@ recreate_database:
 
 add_data_to_database:
 	psql postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/postgres -f ./course/insert.sql
-
+	psql postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/postgres -f ./labs/4/roles.sql
+	psql postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/postgres -f ./labs/4/users.sql
 # DOCKER
 dc-postgres:
 	docker-compose -f postgre.yaml up --build
